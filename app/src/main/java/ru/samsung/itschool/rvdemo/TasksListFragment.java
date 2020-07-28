@@ -41,14 +41,12 @@ public class TasksListFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_tasksListFragment_to_addTaskFragment);
         });
 
+        TaskAdapter taskAdapter = new TaskAdapter(new TaskDiffCallback());
+        binding.tasksList.setAdapter(taskAdapter);
+
         tasksListViewModel.tasksList.observe(getViewLifecycleOwner(), tasks -> {
             if (tasks != null) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (Task task :
-                        tasks) {
-                    stringBuilder.append(task.getTaskName() + " " + task.getTaskImportance() + "\n");
-                }
-                binding.tasksList.setText(stringBuilder.toString());
+                taskAdapter.submitList(tasks);
             }
         });
 
